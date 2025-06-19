@@ -31,7 +31,7 @@ contract HerbalPlant {
     }
 
     struct PlantRecord {
-        string publicTxHash;    // Transaction hash dari Public
+        string privateTxHash;    // Transaction hash dari Public
         uint256 plantId;         // ID tanaman dari Public
         address userAddress;     // Address user yang menambahkan
         uint256 timestamp;       // Waktu penyimpanan
@@ -60,7 +60,7 @@ contract HerbalPlant {
 
     event PlantRecordAdded(
         uint256 indexed recordId,
-        string publicTxHash,
+        string privateTxHash,
         uint256 plantId,
         address userAddress,
         uint256 timestamp
@@ -156,7 +156,7 @@ contract HerbalPlant {
 
     // Auto-save plant record dengan transaction hash
     plantRecords[recordCount] = PlantRecord({
-        publicTxHash: "",
+        privateTxHash: "",
         plantId: currentId,
         userAddress: msg.sender,
         timestamp: block.timestamp
@@ -196,7 +196,7 @@ contract HerbalPlant {
 
     // Auto-save plant record untuk edit
     plantRecords[recordCount] = PlantRecord({
-        publicTxHash: "", 
+        privateTxHash: "", 
         plantId: plantId,
         userAddress: msg.sender,
         timestamp: block.timestamp
@@ -439,14 +439,14 @@ contract HerbalPlant {
     
     // 🔹 mengambil transaction hash, plantId, dan userAddress, dan timestamp
     function getPlantRecord(uint256 recordId) public view returns (
-        string memory publicTxHash,
+        string memory privateTxHash,
         uint256 plantId,
         address userAddress,
         uint256 timestamp
     ) {
         PlantRecord memory record = plantRecords[recordId];
         return (
-            record.publicTxHash,
+            record.privateTxHash,
             record.plantId,
             record.userAddress,
             record.timestamp

@@ -9,8 +9,7 @@
     "start": "node server.js",
     "dev": "nodemon --legacy-watch server.js",
     "compile": "truffle compile --all",
-    "migrate": "truffle migrate --network development",
-    "migrate-public": "truffle migrate --network public",
+    "migrate-private": "truffle migrate --network private",
     "test": "jest",
     "test:watch": "jest --watch"
   },

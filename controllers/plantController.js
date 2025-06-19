@@ -575,7 +575,7 @@ async function getPlantRecord(req, res) {
     res.json({
       success: true,
       record: {
-        publicTxHash: record.publicTxHash,
+        privateTxHash: record.privateTxHash,
         plantId: record.plantId.toString(),
         userAddress: record.userAddress,
         timestamp: record.timestamp.toString(),
@@ -603,7 +603,7 @@ async function getAllPlantRecord(req, res) {
       const record = await contract.methods.getPlantRecord(i).call();
       records.push({
         recordId: i.toString(),
-        publicTxHash: record.publicTxHash,
+        privateTxHash: record.privateTxHash,
         plantId: record.plantId.toString(),
         userAddress: record.userAddress,
         timestamp: record.timestamp.toString(),
@@ -645,7 +645,7 @@ async function getPlantTransactionHistory(req, res) {
       if (record.plantId.toString() === plantId.toString()) {
         plantRecords.push({
           recordId: i.toString(),
-          publicTxHash: record.publicTxHash,
+          privateTxHash: record.privateTxHash,
           plantId: record.plantId.toString(),
           userAddress: record.userAddress,
           timestamp: record.timestamp.toString(),
