@@ -2,8 +2,8 @@ const express = require("express");
 const authRoutes = require("./authRoutes.js");
 const plantRoutes = require("./plantRoutes.js");
 const ipfsRoutes = require("./ipfsRoutes.js");
+const performanceRoutes = require("./performanceRoutes.js");
 const { initialize } = require("../utils/blockchain.js");
-const { verifyToken } = require("../jwtMiddleware.js"); // Middleware untuk verifikasi token
 
 const router = express.Router();
 
@@ -29,6 +29,7 @@ router.use((req, res, next) => {
 router.use("/auth", authRoutes);
 router.use("/plants", plantRoutes);
 router.use("/ipfs", ipfsRoutes);
+router.use("/performance", performanceRoutes);
 
 // Middleware untuk menangani rute yang tidak ditemukan
 router.use((req, res) => {
