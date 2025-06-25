@@ -423,7 +423,7 @@ async function performanceSearchPlants(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Searching plants by ${testAccount.fullName}`
+      `Performance Test: Searching plants by ${testAccount.fullName}`
     );
     console.time("Performance Search Plant Time");
 
@@ -514,7 +514,7 @@ async function performanceGetAllPlants(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting all plants by ${testAccount.fullName}`
+      `Performance Test: Getting all plants by ${testAccount.fullName}`
     );
     console.time("Performance Get All Plants Time");
 
@@ -596,7 +596,7 @@ async function performanceGetPlant(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting plant ${plantId} by ${testAccount.fullName}`
+      `Performance Test: Getting plant ${plantId} by ${testAccount.fullName}`
     );
     console.time("Performance Get Plant Time");
 
@@ -676,7 +676,7 @@ async function performanceGetPlantRatings(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting plant ratings for plant ${plantId} by ${testAccount.fullName}`
+      `Performance Test: Getting plant ratings for plant ${plantId} by ${testAccount.fullName}`
     );
     console.time("Performance Get Plant Rating Time");
 
@@ -728,7 +728,7 @@ async function performanceGetComments(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting comments for plant ${plantId} by ${testAccount.fullName}`
+      `Performance Test: Getting comments for plant ${plantId} by ${testAccount.fullName}`
     );
 
     const { contract } = await initialize();
@@ -788,7 +788,7 @@ async function performanceGetAverageRating(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting average rating for plant ${plantId} by ${testAccount.fullName}`
+      `Performance Test: Getting average rating for plant ${plantId} by ${testAccount.fullName}`
     );
     console.time("Performance Get Average Rating Time");
 
@@ -852,7 +852,7 @@ async function performanceGetPlantRecord(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting plant record ${recordIndex} by ${testAccount.fullName}`
+      `Performance Test: Getting plant record ${recordIndex} by ${testAccount.fullName}`
     );
 
     const { contract } = await initialize();
@@ -900,7 +900,7 @@ async function performanceGetAllPlantRecord(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting all plant records by ${testAccount.fullName}`
+      `Performance Test: Getting all plant records by ${testAccount.fullName}`
     );
     console.time("Performance Get All Plant Records Time");
 
@@ -961,7 +961,7 @@ async function performanceGetPlantTransactionHistory(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting transaction history for plant ${plantId} by ${testAccount.fullName}`
+      `Performance Test: Getting transaction history for plant ${plantId} by ${testAccount.fullName}`
     );
 
     const { contract } = await initialize();
@@ -1023,7 +1023,7 @@ async function performanceGetRecordCount(req, res) {
     }
 
     console.log(
-      `🧪 Performance Test: Getting record count by ${testAccount.fullName}`
+      `Performance Test: Getting record count by ${testAccount.fullName}`
     );
 
     const { contract } = await initialize();

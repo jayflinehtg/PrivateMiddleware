@@ -2,43 +2,41 @@ require("dotenv").config();
 const path = require("path");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-const privateKey = process.env.ACCOUNT_PRIVATE_KEY;
-const rpcUrl = process.env.BLOCKCHAIN_RPC_URL;
-
 module.exports = {
   networks: {
     private: {
-      provider: () => {
-        if (!privateKey) {
-          throw new Error("ACCOUNT_PRIVATE_KEY tidak ditemukan di .env");
-        }
-        if (!rpcUrl) {
-          throw new Error("BLOCKCHAIN_RPC_URL tidak ditemukan di .env");
-        }
-        return new HDWalletProvider({
-          privateKeys: [privateKey],
-          providerOrUrl: rpcUrl,
-          numberOfAddresses: 1,
-          shareNonce: true,
-          pollingInterval: 1000,
-        });
-      },
-      network_id: "*",
-      host: "0.0.0.0",
-      port: 7545,
-      gas: 6721975,
-      gasPrice: 20000000000,
+      provider: () =>
+        new HDWalletProvider({
+          privateKeys: [process.env.ACCOUNT_PRIVATE_KEY],
+          providerOrUrl: process.env.BLOCKCHAIN_RPC_URL,
+          chainId: 1337,
+          pollingInterval: 8000,
+          timeout: 60000,
+        }),
+      network_id: 1337,
+      gas: 4500000,
+      gasPrice: 0,
       confirmations: 0,
-      timeoutBlocks: 50,
-      networkCheckTimeout: 10000,
+      timeoutBlocks: 200,
       skipDryRun: true,
+      networkCheckTimeout: 100000,
+      deploymentPollingInterval: 8000,
     },
   },
   compilers: {
     solc: {
       version: "0.8.0",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200,
+        },
+      },
     },
   },
   contracts_directory: path.join(__dirname, "contracts"),
   contracts_build_directory: path.join(__dirname, "build", "contracts"),
+  mocha: {
+    timeout: 100000,
+  },
 };

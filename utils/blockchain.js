@@ -14,8 +14,7 @@ const contractJSON = JSON.parse(fs.readFileSync(contractPath, "utf8"));
 
 // Extract ABI and Contract Address
 const contractABI = contractJSON.abi;
-const contractAddress =
-  process.env.SMART_CONTRACT_ADDRESS;
+const contractAddress = process.env.SMART_CONTRACT_ADDRESS;
 
 let web3;
 let contract;

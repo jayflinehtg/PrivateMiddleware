@@ -19,7 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Mount router utama dari index.js
+// Mount router utama
 app.use("/api", routes);
 
 // Penanganan 404 untuk rute yang tidak terdaftar
