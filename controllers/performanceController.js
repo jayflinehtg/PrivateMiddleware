@@ -205,9 +205,9 @@ async function performanceAddPlant(req, res) {
 // Performance testing untuk edit plant
 async function performanceEditPlant(req, res) {
   try {
+    const { plantId } = req.params;
     const {
       userId,
-      plantId,
       name,
       namaLatin,
       komposisi,
@@ -217,6 +217,14 @@ async function performanceEditPlant(req, res) {
       efekSamping,
       ipfsHash,
     } = req.body;
+
+    // ✅ Validasi plantId
+    if (!plantId || plantId === "undefined") {
+      return res.status(400).json({
+        success: false,
+        message: "Plant ID is required and must be valid",
+      });
+    }
 
     const testAccount = getTestAccountFromWallet(userId);
     if (!testAccount) {
@@ -232,11 +240,14 @@ async function performanceEditPlant(req, res) {
 
     const { contract } = await initialize();
 
+    // ✅ Pastikan plantId adalah string atau number yang valid
+    const plantIdParam = plantId.toString();
+
     const transactionObject = {
       to: process.env.SMART_CONTRACT_ADDRESS,
       data: contract.methods
         .editPlant(
-          plantId,
+          plantIdParam, // ✅ Gunakan plantIdParam yang sudah divalidasi
           name,
           namaLatin,
           komposisi,
@@ -256,7 +267,7 @@ async function performanceEditPlant(req, res) {
       success: true,
       message: "Performance test plant edited successfully",
       privateTxHash: receipt.transactionHash,
-      plantId: plantId,
+      plantId: plantIdParam,
       testUser: testAccount.fullName,
       gasUsed: receipt.gasUsed,
       blockNumber: receipt.blockNumber,
@@ -717,7 +728,15 @@ async function performanceGetPlantRatings(req, res) {
 // Performance testing untuk get comments
 async function performanceGetComments(req, res) {
   try {
-    const { userId, plantId } = req.body;
+    const { plantId } = req.params;
+    const { userId } = req.body;
+
+    if (!plantId || plantId === "undefined") {
+      return res.status(400).json({
+        success: false,
+        message: "Plant ID is required and must be valid",
+      });
+    }
 
     const testAccount = getTestAccountFromWallet(userId);
     if (!testAccount) {
@@ -734,14 +753,16 @@ async function performanceGetComments(req, res) {
     const { contract } = await initialize();
     const startTime = Date.now();
 
+    const plantIdParam = plantId.toString();
+
     const commentCount = await contract.methods
-      .getPlantCommentCount(plantId)
+      .getPlantCommentCount(plantIdParam)
       .call();
     const comments = [];
 
     for (let i = 0; i < commentCount; i++) {
       const comment = await contract.methods
-        .getPlantCommentAtIndex(plantId, i)
+        .getPlantCommentAtIndex(plantIdParam, i)
         .call();
       comments.push({
         index: i,
@@ -757,7 +778,7 @@ async function performanceGetComments(req, res) {
     res.json({
       success: true,
       message: "Performance test get comments completed successfully",
-      plantId: plantId,
+      plantId: plantIdParam,
       commentCount: commentCount.toString(),
       comments: comments,
       testUser: testAccount.fullName,

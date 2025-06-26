@@ -57,7 +57,7 @@ router.post("/auth/logout", performanceLogoutUser);
 router.post("/plant/add", performanceAddPlant);
 
 // Performance testing untuk edit plant
-router.put("/plant/edit", performanceEditPlant);
+router.put("/plant/edit/:plantId", performanceEditPlant);
 
 // Performance testing untuk rate plant
 router.post("/plant/rate", performanceRatePlant);
