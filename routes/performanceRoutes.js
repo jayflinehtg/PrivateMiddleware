@@ -30,6 +30,18 @@ const {
 
 const router = express.Router();
 
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Hanya file gambar yang diperbolehkan!"), false);
+    }
+    cb(null, true);
+  },
+});
+
 // ==================== AUTH PERFORMANCE ROUTES ====================
 // Performance testing untuk register user
 router.post("/auth/register", performanceRegisterUser);
