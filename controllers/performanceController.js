@@ -180,7 +180,7 @@ async function performanceAddPlant(req, res) {
           ipfsHash
         )
         .encodeABI(),
-      gas: 5000000,
+      gas: 4000000,
     };
 
     const receipt = await sendTransactionWithWallet(userId, transactionObject);
