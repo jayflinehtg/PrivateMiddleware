@@ -23,6 +23,9 @@ const {
   performanceGetAllPlantRecord,
   performanceGetPlantTransactionHistory,
   performanceGetRecordCount,
+
+  performanceAddFileToIPFS,
+  performanceGetFileFromIPFS,
 } = require("../controllers/performanceController.js");
 
 const router = express.Router();
@@ -52,6 +55,12 @@ router.post("/plant/like", performanceLikePlant);
 
 // Performance testing untuk comment plant
 router.post("/plant/comment", performanceCommentPlant);
+
+// Performance testing untuk add gambar ke IPFS
+router.post("/ipfs/upload", upload.single("file"), performanceAddFileToIPFS);
+
+// Performance testing untuk get gambar dari IPFS
+router.post("/ipfs/getFile/:cid", performanceGetFileFromIPFS);
 
 // ==================== READ OPERATIONS PERFORMANCE ROUTES ====================
 // Performance testing untuk search plants
