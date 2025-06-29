@@ -12,6 +12,7 @@ const {
   getAllPlants,
   getAverageRating,
   getPlantRecord,
+  updatePlantRecordHash,
   getAllPlantRecord,
   getPlantTransactionHistory,
   getRecordCount,
@@ -58,6 +59,9 @@ router.get("/averageRating/:plantId", getAverageRating);
 
 // 🔹 Rute untuk mengambil record transaksi berdasarkan recordId
 router.get("/record/:recordId", getPlantRecord);
+
+// 🔹 Rute untuk update plant record hash
+router.post("/record/update-hash", verifyToken, requireFreshToken, updatePlantRecordHash);
 
 // 🔹 Rute untuk mengambil semua plant records
 router.get("/records/all", getAllPlantRecord);

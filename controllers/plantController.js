@@ -1,4 +1,4 @@
-  const { initialize } = require("../utils/blockchain.js");
+const { initialize } = require("../utils/blockchain.js");
 const { getUserData } = require("./authController.js");
 
 async function addPlantData(req, res) {
@@ -589,6 +589,40 @@ async function getPlantRecord(req, res) {
   }
 }
 
+// Fungsi untuk mengupdate transaction hash untuk history
+async function updatePlantRecordHash(req, res) {
+  try {
+    const { recordId, txHash } = req.body;
+    const userAddress = req.user.publicKey;
+
+    console.log(
+      "Preparing update transaction hash date for user:",
+      userAddress
+    );
+    console.log(`Updating plant record ${recordId} with txHash: ${txHash}`);
+
+    const { contract } = await initialize();
+
+    // Prepare transaction untuk update record hash
+    const txObject = contract.methods.updatePlantRecordHash(recordId, txHash);
+    const transactionDataHex = txObject.encodeABI();
+
+    res.json({
+      success: true,
+      message: "Plant record hash update transaction prepared",
+      data: {
+        transactionData: transactionDataHex,
+      },
+    });
+  } catch (error) {
+    console.error("❌ Error updating plant record hash:", error);
+    res.status(500).json({
+      success: false,
+      message: `Failed to update plant record hash: ${error.message}`,
+    });
+  }
+}
+
 // Fungsi untuk mendapatkan semua plant records
 async function getAllPlantRecord(req, res) {
   try {
@@ -755,6 +789,7 @@ module.exports = {
   getComments,
   getAllPlants,
   getPlantRecord,
+  updatePlantRecordHash,
   getAllPlantRecord,
   getPlantTransactionHistory,
   getRecordCount,

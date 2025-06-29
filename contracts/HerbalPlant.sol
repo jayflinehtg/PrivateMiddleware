@@ -57,6 +57,7 @@ contract HerbalPlant {
     event UserLoggedIn(address indexed publicKey);
     event UserLoggedOut(address indexed publicKey);
     event PlantCommented(uint plantId, address user, string comment);
+    event PlantRecordUpdated(uint256 indexed recordId, string txHash);
 
     event PlantRecordAdded(
         uint256 indexed recordId,
@@ -206,7 +207,16 @@ contract HerbalPlant {
     emit PlantRecordAdded(recordCount, "", plantId, msg.sender, block.timestamp);
     
     recordCount++;
-}
+    }
+
+    // 🔹 Update Transaction Hash)
+    function updatePlantRecordHash(uint256 recordId, string memory txHash) public {
+    require(recordId < recordCount, "Record tidak ditemukan");
+    require(plantRecords[recordId].userAddress == msg.sender, "Hanya pemilik record yang dapat update");
+    
+    plantRecords[recordId].privateTxHash = txHash;
+    emit PlantRecordUpdated(recordId, txHash);
+    }
 
     // 🔹 Memberi rating tanaman herbal (1-5)
     function ratePlant(uint plantId, uint rating) public onlyActiveUser {
