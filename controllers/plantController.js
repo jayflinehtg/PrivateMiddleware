@@ -147,12 +147,11 @@ async function getPlant(req, res) {
     console.time("Get Plant Time");
     const { plantId } = req.params;
 
-    // Ambil alamat publik user (kalau tersedia, bisa undefined untuk guest)
+    // Ambil alamat publik user
     const userAddress = req.user?.publicKey;
 
     const { contract } = await initialize();
 
-    // Mengambil data tanaman herbal dari smart contract
     const plant = await contract.methods.getPlant(plantId).call();
 
     let isLikedByUser = false;
@@ -162,8 +161,8 @@ async function getPlant(req, res) {
         .call();
     }
 
-    // Mengonversi nilai yang mungkin BigInt ke string
-    const plantIdString = plantId.toString(); // Jika plantId merupakan BigInt
+    // Mengonversi nilai BigInt ke string
+    const plantIdString = plantId.toString();
     const ratingTotalString = plant.ratingTotal.toString();
     const ratingCountString = plant.ratingCount.toString();
     const likeCountString = plant.likeCount.toString();
@@ -179,11 +178,11 @@ async function getPlant(req, res) {
         caraPengolahan: plant.caraPengolahan,
         efekSamping: plant.efekSamping,
         ipfsHash: plant.ipfsHash,
-        ratingTotal: ratingTotalString, // Mengonversi BigInt menjadi string
-        ratingCount: ratingCountString, // Mengonversi BigInt menjadi string
-        likeCount: likeCountString, // Mengonversi BigInt menjadi string
+        ratingTotal: ratingTotalString,
+        ratingCount: ratingCountString,
+        likeCount: likeCountString,
         owner: plant.owner,
-        plantId: plantIdString, // Mengembalikan plantId sebagai string
+        plantId: plantIdString,
         isLikedByUser,
       },
     });
@@ -259,7 +258,7 @@ async function getAverageRating(req, res) {
 
     res.json({
       success: true,
-      averageRating: Math.round(validRating * 10) / 10, // Mengonversi rata-rata rating menjadi string
+      averageRating: Math.round(validRating * 10) / 10,
     });
     console.timeEnd("Get Average Rating Time");
   } catch (error) {
@@ -283,7 +282,7 @@ async function getPlantRatings(req, res) {
 
     res.json({
       success: true,
-      ratings: ratingsArray, // Mengembalikan ratings dalam bentuk array
+      ratings: ratingsArray,
     });
     console.timeEnd("Get Plant Rating Time");
   } catch (error) {
@@ -369,7 +368,7 @@ async function getAllPlants(req, res) {
     console.time("Get All Plants Time");
     const { contract } = await initialize();
 
-    // Konversi BigInt ke Number dengan aman
+    // Konversi BigInt ke Number
     const totalPlantsBigInt = await contract.methods.plantCount().call();
     const totalPlants = parseInt(totalPlantsBigInt.toString());
 
@@ -459,9 +458,9 @@ async function searchPlants(req, res) {
       namaLatin: plant.namaLatin || "Tidak Diketahui",
       komposisi: plant.komposisi || "Tidak Diketahui",
       manfaat: plant.manfaat || "Tidak Diketahui",
-      dosis: plant.dosis || "Tidak Diketahui", // Menambahkan dosis
+      dosis: plant.dosis || "Tidak Diketahui",
       caraPengolahan: plant.caraPengolahan || "Tidak Diketahui",
-      efekSamping: plant.efekSamping || "Tidak Diketahui", // Menambahkan efek samping
+      efekSamping: plant.efekSamping || "Tidak Diketahui",
       ipfsHash: plant.ipfsHash || "Tidak Diketahui",
       ratingTotal: (plant.ratingTotal || 0n)?.toString() || "0",
       ratingCount: (plant.ratingCount || 0n)?.toString() || "0",
@@ -489,7 +488,7 @@ async function getComments(req, res) {
 
     const { contract } = await initialize();
 
-    // 1. Dapatkan jumlah total komentar dari fungsi baru di kontrak
+    // Dapatkan jumlah total komentar dari fungsi baru di kontrak
     const totalCommentsBigInt = await contract.methods
       .getPlantCommentCount(plantId)
       .call();
@@ -506,16 +505,15 @@ async function getComments(req, res) {
       });
     }
 
-    // 2. Hitung startIndex dan endIndex
+    // Hitung startIndex dan endIndex
     const totalPages = Math.ceil(totalComments / limit);
     const startIndex = (page - 1) * limit;
     const endIndex = Math.min(startIndex + limit, totalComments);
     const commentsPromises = [];
 
-    // 3. Loop untuk mengambil komentar satu per satu untuk halaman saat ini
+    // Loop untuk mengambil komentar satu per satu untuk halaman saat ini
     if (startIndex < totalComments) {
       for (let i = startIndex; i < endIndex; i++) {
-        // Panggil fungsi baru getPlantCommentAtIndex
         commentsPromises.push(
           contract.methods.getPlantCommentAtIndex(plantId, i).call()
         );
@@ -524,7 +522,7 @@ async function getComments(req, res) {
 
     const resolvedComments = await Promise.all(commentsPromises);
 
-    // 4. Ambil fullName untuk setiap komentator
+    // Ambil fullName untuk setiap komentator
     const commentsWithStringValues = await Promise.all(
       resolvedComments.map(async (comment) => {
         try {
@@ -657,7 +655,7 @@ async function getAllPlantRecord(req, res) {
   }
 }
 
-// Fungsi untuk mendapatkan transaction history berdasarkan plantId dengan pagination
+// Fungsi untuk mendapatkan transaction history berdasarkan plantId
 async function getPlantTransactionHistory(req, res) {
   try {
     console.time("Get Plant Transaction History Time");

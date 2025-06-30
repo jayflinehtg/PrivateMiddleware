@@ -24,22 +24,22 @@ const optionalAuth = require("../optionalAuth.js");
 
 const router = express.Router();
 
-// 🔹 Rute untuk menambahkan tanaman (butuh autentikasi)
+// 🔹 Rute untuk menambahkan tanaman
 router.post("/add", verifyToken, requireFreshToken, addPlantData);
 
-// 🔹 Rute untuk mengedit data tanaman herbal (butuh autentikasi)
+// 🔹 Rute untuk mengedit data tanaman herbal
 router.put("/edit/:plantId", verifyToken, requireFreshToken, editPlant);
 
 // 🔹 Rute untuk mencari tanaman berdasarkan parameter
 router.get("/search", searchPlants);
 
-// 🔹 Rute untuk memberi rating pada tanaman (butuh autentikasi)
+// 🔹 Rute untuk memberi rating pada tanaman
 router.post("/rate", verifyToken, requireFreshToken, ratePlant);
 
-// 🔹 Rute untuk menyukai tanaman (butuh autentikasi)
+// 🔹 Rute untuk menyukai tanaman
 router.post("/like", verifyToken, requireFreshToken, likePlant);
 
-// 🔹 Rute untuk memberi komentar pada tanaman (butuh autentikasi)
+// 🔹 Rute untuk memberi komentar pada tanaman
 router.post("/comment", verifyToken, requireFreshToken, commentPlant);
 
 // 🔹 Rute untuk memberi menampilkan semua tanaman
@@ -66,7 +66,7 @@ router.post("/record/update-hash", verifyToken, requireFreshToken, updatePlantRe
 // 🔹 Rute untuk mengambil semua plant records
 router.get("/records/all", getAllPlantRecord);
 
-// 🔹 Rute untuk mengambil transaction history berdasarkan plantId dengan pagination
+// 🔹 Rute untuk mengambil transaction history berdasarkan plantId
 router.get("/history/:plantId", getPlantTransactionHistory);
 
 // 🔹 Rute untuk mengambil total record count

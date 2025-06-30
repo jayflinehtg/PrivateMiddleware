@@ -19,7 +19,7 @@ contract HerbalPlant {
 
     struct User {
         string fullName;
-        string hashPass;  // Store hashed password
+        string hashPass;
         bool isRegistered;
         bool isLoggedIn;
     }
@@ -31,15 +31,15 @@ contract HerbalPlant {
     }
 
     struct PlantRecord {
-        string privateTxHash;    // Transaction hash dari Public
-        uint256 plantId;         // ID tanaman dari Public
-        address userAddress;     // Address user yang menambahkan
-        uint256 timestamp;       // Waktu penyimpanan
+        string privateTxHash;
+        uint256 plantId;
+        address userAddress;
+        uint256 timestamp;
     }
 
     mapping(uint => Plant) public plants;
     mapping(address => User) private usersByPublicKey;
-    mapping(uint => Comment[]) public plantComments;  // Mapping for plant comments
+    mapping(uint => Comment[]) public plantComments;
     mapping(uint => address[]) public plantRatingUsers;
     mapping(uint => mapping(address => uint)) public plantRatings;
     mapping(uint => mapping(address => bool)) public plantLikes;
@@ -138,7 +138,7 @@ contract HerbalPlant {
     ) public onlyActiveUser {
         require(bytes(name).length > 0, "Nama tanaman diperlukan");
 
-        uint currentId = plantCount; // simpan ID sekarang sebelum increment
+        uint currentId = plantCount;
 
         plants[currentId] = Plant({
             name: name,
@@ -182,7 +182,7 @@ contract HerbalPlant {
         string memory efekSamping,
         string memory ipfsHash
     ) public onlyActiveUser {
-        // Pastikan yang mengedit adalah pemilik tanaman
+        // Memastikan yang mengedit adalah pemilik tanaman
         require(plants[plantId].owner == msg.sender, "Hanya pemilik tanaman yang dapat mengedit");
 
         // Memperbarui data tanaman
@@ -209,7 +209,7 @@ contract HerbalPlant {
     recordCount++;
     }
 
-    // 🔹 Update Transaction Hash)
+    // 🔹 Update Transaction Hash
     function updatePlantRecordHash(uint256 recordId, string memory txHash) public {
     require(recordId < recordCount, "Record tidak ditemukan");
     require(plantRecords[recordId].userAddress == msg.sender, "Hanya pemilik record yang dapat update");
@@ -269,16 +269,16 @@ contract HerbalPlant {
     function likePlant(uint plantId) public onlyActiveUser {
         require(plants[plantId].owner != address(0), "Tanaman tidak ditemukan");
 
-        // Jika pengguna sudah memberi like sebelumnya, hapus like tersebut
+        // Jika pengguna sudah memberi like sebelumnya, hapus state like tersebut
         if (plantLikes[plantId][msg.sender]) {
             plantLikes[plantId][msg.sender] = false;
             plants[plantId].likeCount--;
-            emit PlantLiked(plantId, msg.sender); // Emit event jika perlu
+            emit PlantLiked(plantId, msg.sender);
         } else {
             // Jika belum memberi like, beri like
             plantLikes[plantId][msg.sender] = true;
             plants[plantId].likeCount++;
-            emit PlantLiked(plantId, msg.sender); // Emit event jika perlu
+            emit PlantLiked(plantId, msg.sender);
         }
     }
 
@@ -309,12 +309,11 @@ contract HerbalPlant {
 
     // 🔹 Mendapatkan satu komentar berdasarkan indeksnya untuk tanaman tertentu
     function getPlantCommentAtIndex(uint plantId, uint index) public view returns (Comment memory) {
-        // require(plants[plantId].owner != address(0), "Tanaman tidak ditemukan"); // Opsional
         require(index < plantComments[plantId].length, "Indeks komentar di luar jangkauan");
         return plantComments[plantId][index];
     }
 
-    // 🔹 Mengambil detail tanaman herbal (Semua informasi dalam satu fungsi)
+    // 🔹 Mengambil detail tanaman herbal
     function getPlant(uint plantId) public view returns (
         string memory name,
         string memory namaLatin,
@@ -356,7 +355,7 @@ contract HerbalPlant {
     string memory manfaat
     ) 
     public view
-    returns (uint[] memory, Plant[] memory) // Return 2 array: IDs dan data tanaman
+    returns (uint[] memory, Plant[] memory)
     {
     uint plantIndex = 0;
     uint[] memory idResults = new uint[](plantCount);
@@ -375,8 +374,8 @@ contract HerbalPlant {
 
         // Jika memenuhi kriteria, tambahkan ke hasil
         if (isMatch) {
-            idResults[plantIndex] = i; // Simpan ID tanaman (index)
-            plantResults[plantIndex] = currentPlant; // Simpan data lengkap
+            idResults[plantIndex] = i;
+            plantResults[plantIndex] = currentPlant;
             plantIndex++;
         }
     }
@@ -391,11 +390,11 @@ contract HerbalPlant {
         finalPlants[i] = plantResults[i];
     }
 
-    // Kembalikan sebagai tuple (2 array terpisah)
+    // Kembalikan sebagai tuple
     return (finalIds, finalPlants);
     }
 
-    // 🔹 Fungsi untuk mengecek apakah sebuah string mengandung substring tertentu (case-insensitive)
+    // 🔹 Fungsi untuk mengecek apakah sebuah string mengandung substring tertentu
     function contains(string memory haystack, string memory needle) internal pure returns (bool) {
         bytes memory haystackBytes = bytes(haystack);
         bytes memory needleBytes = bytes(needle);
@@ -410,7 +409,7 @@ contract HerbalPlant {
         bytes memory haystackLower = bytes(toLowerCase(haystack));
         bytes memory needleLower = bytes(toLowerCase(needle));
 
-        // Optimasi: Batasi jumlah iterasi yang diperlukan
+        // Batasi jumlah iterasi yang diperlukan
         uint maxIterations = haystackLower.length - needleLower.length + 1;
         
         for (uint i = 0; i < maxIterations; i++) {
@@ -420,7 +419,7 @@ contract HerbalPlant {
             for (uint j = 0; j < needleLower.length; j++) {
                 if (haystackLower[i + j] != needleLower[j]) {
                     isMatch = false;
-                    break; // Berhenti jika ada ketidakcocokan
+                    break;
                 }
             }
             
@@ -440,7 +439,7 @@ contract HerbalPlant {
             if (strBytes[i] >= 0x41 && strBytes[i] <= 0x5A) {
                 lowerBytes[i] = bytes1(uint8(strBytes[i]) + 32); // Konversi ke lowercase
             } else {
-                lowerBytes[i] = strBytes[i]; // Pertahankan karakter lain
+                lowerBytes[i] = strBytes[i];
             }
         }
         

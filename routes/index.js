@@ -11,7 +11,7 @@ const router = express.Router();
 let blockchain;
 (async () => {
   try {
-    blockchain = await initialize(); // Memastikan blockchain sudah terhubung
+    blockchain = await initialize();
     console.log("✅ Blockchain berhasil di-inisialisasi");
   } catch (error) {
     console.error("❌ Error initializing blockchain:", error.message);
@@ -39,7 +39,7 @@ router.use((req, res) => {
   });
 });
 
-// Middleware untuk menangani error server dengan lebih baik
+// Middleware untuk menangani error server
 router.use((err, req, res, next) => {
   console.error("❌ Internal Server Error:", err);
   res.status(500).json({
